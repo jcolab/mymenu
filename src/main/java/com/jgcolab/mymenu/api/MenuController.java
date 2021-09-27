@@ -2,6 +2,7 @@ package com.jgcolab.mymenu.api;
 
 import com.jgcolab.mymenu.domain.Ingredients;
 import com.jgcolab.mymenu.domain.Menu;
+import com.jgcolab.mymenu.domain.Weekday;
 import com.jgcolab.mymenu.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,10 +26,8 @@ public class MenuController {
 		return menuRepository.findAll();
 	}
 
-	@GetMapping("/{id}")
-	public Optional<Menu> listMenuById (@PathVariable Long id) {
-		return menuRepository.findById(id);
-	}
+	@GetMapping("/{weekday}")
+	public List<Optional<Menu>> listMenuByWeekday (@PathVariable("weekday") Weekday weekday) {return menuRepository.findByWeekday(weekday);}
 
 	@PostMapping
 	@ResponseStatus (HttpStatus.CREATED)
