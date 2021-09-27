@@ -3,10 +3,8 @@ package com.jgcolab.mymenu.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter @Setter
 @Entity
@@ -17,13 +15,14 @@ public class Menu {
 	private String description;
 	private MealType mealType;
 	private Weekday weekday;
-	//private Ingredients ingredients;
+	@OneToMany(targetEntity=Ingredients.class, cascade=CascadeType.PERSIST)
+	private List<Ingredients> ingredients;
 
 	public Menu(){}
-	public Menu(String description, MealType mealType, Weekday weekday, Ingredients ingredients) {
+	public Menu(String description, MealType mealType, Weekday weekday, List<Ingredients> ingredients) {
 		this.description = description;
 		this.mealType = mealType;
 		this.weekday = weekday;
-		//this.ingredients = ingredients;
+		this.ingredients = ingredients;
 	}
 }
