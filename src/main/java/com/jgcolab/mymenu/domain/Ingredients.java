@@ -8,9 +8,11 @@ import javax.persistence.*;
 @Getter @Setter
 @Entity
 public class Ingredients {
-	@Id
+	@Id @Column (name = "ingredients_id")
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column (name = "ingredients_name")
 	private String name;
+	@Column (name = "ingredients_description")
 	private String description;
 }
