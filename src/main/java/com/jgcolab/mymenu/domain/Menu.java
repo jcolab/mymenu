@@ -11,10 +11,12 @@ import java.util.List;
 public class Menu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column (name = "menu_id")
 	private Long id;
 	private String description;
 	private MealType mealType;
 	private Weekday weekday;
+	@JoinColumn (name = "ingredients_id")
 	@OneToMany(targetEntity=Ingredients.class, cascade=CascadeType.PERSIST)
 	private List<Ingredients> ingredients;
 

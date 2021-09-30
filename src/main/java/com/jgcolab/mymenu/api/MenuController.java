@@ -16,27 +16,27 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/menu")
+@RequestMapping
 public class MenuController {
 
 	@Autowired private MenuRepository menuRepository;
 
-	@GetMapping
+	@GetMapping ("/menus")
 	public List<Menu> listMenus () {
 		return menuRepository.findAll();
 	}
 
-	@GetMapping("/{weekday}")
+	@GetMapping("/menu/{weekday}")
 	public List<Optional<Menu>> listMenuByWeekday (@PathVariable("weekday") Weekday weekday) {return menuRepository.findByWeekday(weekday);}
 
-	@PostMapping
+	@PostMapping ("/menu")
 	@ResponseStatus (HttpStatus.CREATED)
 	@Transactional
 	public Menu registerMenu(@RequestBody Menu menu) {
 		return menuRepository.save(menu);
 	}
 
-	@PutMapping ("/{id}")
+	@PutMapping ("/menu/{id}")
 	@Transactional
 	public ResponseEntity<Menu> updateMenu(@PathVariable Long id, @Validated @RequestBody Menu newMenu) {
 		Optional<Menu> oldMenu = menuRepository.findById(id);
@@ -62,7 +62,7 @@ public class MenuController {
 		}
 	}
 
-	@DeleteMapping ("/{id}")
+	@DeleteMapping ("/menu/{id}")
 	@Transactional
 	public ResponseEntity<Menu> removeById(@PathVariable Long id) {
 		Optional<Menu> menu = menuRepository.findById(id);
