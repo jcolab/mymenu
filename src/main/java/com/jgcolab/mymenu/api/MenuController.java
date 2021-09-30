@@ -4,6 +4,7 @@ import com.jgcolab.mymenu.domain.Ingredients;
 import com.jgcolab.mymenu.domain.Menu;
 import com.jgcolab.mymenu.domain.Weekday;
 import com.jgcolab.mymenu.repository.MenuRepository;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -21,22 +22,26 @@ public class MenuController {
 
 	@Autowired private MenuRepository menuRepository;
 
-	@GetMapping ("/menus")
+	@ApiOperation("Return all menus.")
+	@GetMapping (value = "/menus", produces = "application/json")
 	public List<Menu> listMenus () {
 		return menuRepository.findAll();
 	}
 
-	@GetMapping("/menu/{weekday}")
+	@ApiOperation("Return a menu by provided weekday.")
+	@GetMapping(value = "/menu/{weekday}", produces = "application/json")
 	public List<Optional<Menu>> listMenuByWeekday (@PathVariable("weekday") Weekday weekday) {return menuRepository.findByWeekday(weekday);}
 
-	@PostMapping ("/menu")
+	@ApiOperation("Create a new menu.")
+	@PostMapping (value = "/menu", produces = "application/json")
 	@ResponseStatus (HttpStatus.CREATED)
 	@Transactional
 	public Menu registerMenu(@RequestBody Menu menu) {
 		return menuRepository.save(menu);
 	}
 
-	@PutMapping ("/menu/{id}")
+	@ApiOperation("Update a menu by ID.")
+	@PutMapping (value = "/menu/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<Menu> updateMenu(@PathVariable Long id, @Validated @RequestBody Menu newMenu) {
 		Optional<Menu> oldMenu = menuRepository.findById(id);
@@ -62,7 +67,8 @@ public class MenuController {
 		}
 	}
 
-	@DeleteMapping ("/menu/{id}")
+	@ApiOperation("Delete a menu by ID.")
+	@DeleteMapping (value = "/menu/{id}", produces = "application/json")
 	@Transactional
 	public ResponseEntity<Menu> removeById(@PathVariable Long id) {
 		Optional<Menu> menu = menuRepository.findById(id);

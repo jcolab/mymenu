@@ -27,4 +27,9 @@ public class Menu {
 		this.weekday = weekday;
 		this.ingredients = ingredients;
 	}
+	public Menu(String description, MealType mealType, Weekday weekday) {
+		this.description = description;
+		this.mealType = mealType;
+		this.weekday = weekday;
+	}
 }

@@ -1,5 +1,6 @@
 package com.jgcolab.mymenu.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,4 +16,9 @@ public class Ingredients {
 	private String name;
 	@Column (name = "ingredients_description")
 	private String description;
+
+	public Ingredients(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
 }
