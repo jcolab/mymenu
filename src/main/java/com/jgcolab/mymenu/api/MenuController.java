@@ -1,8 +1,6 @@
 package com.jgcolab.mymenu.api;
 
-import com.jgcolab.mymenu.domain.Ingredients;
-import com.jgcolab.mymenu.domain.Menu;
-import com.jgcolab.mymenu.domain.Weekday;
+import com.jgcolab.mymenu.domain.*;
 import com.jgcolab.mymenu.repository.MenuRepository;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +19,12 @@ import java.util.Optional;
 public class MenuController {
 
 	@Autowired private MenuRepository menuRepository;
+	@Autowired private MenuService menuService;
 
 	@ApiOperation("Return all menus.")
 	@GetMapping (value = "/menus", produces = "application/json")
-	public List<Menu> listMenus () {
-		return menuRepository.findAll();
+	public List<MenuDTO> listMenus () {
+		return menuService.getAllMenus();
 	}
 
 	@ApiOperation("Return a menu by provided weekday.")
@@ -36,8 +35,8 @@ public class MenuController {
 	@PostMapping (value = "/menu", produces = "application/json")
 	@ResponseStatus (HttpStatus.CREATED)
 	@Transactional
-	public Menu registerMenu(@RequestBody Menu menu) {
-		return menuRepository.save(menu);
+	public MenuDTO registerMenu(@RequestBody Menu menu) {
+		return menuService.registerMenu(menu);
 	}
 
 	@ApiOperation("Update a menu by ID.")
@@ -51,10 +50,7 @@ public class MenuController {
 			oldMenu.get().setWeekday(newMenu.getWeekday());
 			for (Ingredients newIngredients : newMenu.getIngredients()) {
 				for (Ingredients oldIngredients: oldMenu.get().getIngredients()) {
-					if (!newIngredients.getName().equals(oldIngredients.getName()) && !newIngredients.getDescription().equals(oldIngredients.getDescription())
-					|| !newIngredients.getName().equals(oldIngredients.getName()) && newIngredients.getDescription().equals(oldIngredients.getDescription())
-					|| newIngredients.getName().equals(oldIngredients.getName()) && !newIngredients.getDescription().equals(oldIngredients.getDescription())) {
-						oldIngredients.setName(newIngredients.getName());
+					if (!newIngredients.getDescription().equals(oldIngredients.getDescription())) {
 						oldIngredients.setDescription(newIngredients.getDescription());
 					}
 				}

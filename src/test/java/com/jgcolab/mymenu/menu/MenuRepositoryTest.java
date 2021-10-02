@@ -1,7 +1,7 @@
 package com.jgcolab.mymenu.menu;
 
-import com.jgcolab.mymenu.domain.Ingredients;
 import com.jgcolab.mymenu.domain.Menu;
+import com.jgcolab.mymenu.domain.Ingredients;
 import com.jgcolab.mymenu.repository.MenuRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class MenuRepositoryTest {
     @Test
     void itShouldCheckIfMenuExists() {
         //given
-        Ingredients ingredients = new Ingredients("Onion", "Japanese");
+        Ingredients ingredients = new Ingredients("Onion");
         List<Ingredients> listOfIngredients = new ArrayList<>();
         listOfIngredients.add(ingredients);
         Menu menu = new Menu("Breakfast", DINNER, SUNDAY, listOfIngredients);menuRepository.save(menu);
@@ -39,7 +39,7 @@ public class MenuRepositoryTest {
     @Test
     void itShouldCheckIfSaturdayMenuDoesntExists() {
         //given
-        Ingredients ingredients = new Ingredients("Onion", "Japanese");
+        Ingredients ingredients = new Ingredients("Onion");
         List<Ingredients> listOfIngredients = new ArrayList<>();
         listOfIngredients.add(ingredients);
         Menu menu = new Menu("Breakfast", DINNER, SUNDAY, listOfIngredients);menuRepository.save(menu);
