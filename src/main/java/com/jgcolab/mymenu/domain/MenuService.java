@@ -2,37 +2,56 @@ package com.jgcolab.mymenu.domain;
 
 import com.jgcolab.mymenu.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
 
-    @Autowired
     private MenuRepository menuRepository;
 
-    public List<MenuDTO> getAllMenus () {
-        return (menuRepository
-                .findAll())
-                .stream()
-                .map(this::convertToMenuDTO)
-                .collect(Collectors.toList());
+    @Autowired MenuService(MenuRepository menuRepository) {this.menuRepository = menuRepository;}
+
+    public List<Menu> getAllMenus() {
+        return (menuRepository.findAll());
     }
 
-    public MenuDTO registerMenu (Menu menu) {
-        return convertToMenuDTO(menuRepository.save(menu));
+    public List<Optional<Menu>> getMenuByWeekday(Weekday weekday) {
+        return menuRepository.findByWeekday(weekday);
     }
 
-    private MenuDTO convertToMenuDTO(Menu menu) {
-        MenuDTO menuDTO = new MenuDTO();
-        menuDTO.setId(menu.getId());
-        menuDTO.setDescription(menu.getDescription());
-        menuDTO.setMealType(menu.getMealType());
-        menuDTO.setWeekday(menu.getWeekday());
-        menuDTO.setIngredients(menu.getIngredients());
-        return menuDTO;
+    public Menu registerMenu(Menu menu) {
+        return menuRepository.save(menu);
+    }
+
+    public ResponseEntity<Menu> updateMenu(Long id, Menu newMenu) {
+        Optional<Menu> oldMenu = menuRepository.findById(id);
+        if (oldMenu.isPresent()) {
+            oldMenu.get().setDescription(newMenu.getDescription());
+            oldMenu.get().setMealType(newMenu.getMealType());
+            oldMenu.get().setWeekday(newMenu.getWeekday());
+            for (Ingredients newIngredients : newMenu.getIngredients()) {
+                for (Ingredients oldIngredients : oldMenu.get().getIngredients()) {
+                    if (!newIngredients.equals(oldIngredients)) {
+                        oldIngredients.setDescription(newIngredients.getDescription());
+                    }
+                }
+            }
+            menuRepository.save(oldMenu.get());
+            return new ResponseEntity(oldMenu.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity removeMenu (Long id) {
+        Optional menu = menuRepository.findById(id);
+        if(menu.isPresent()) {
+            menuRepository.deleteById(id);
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 }
