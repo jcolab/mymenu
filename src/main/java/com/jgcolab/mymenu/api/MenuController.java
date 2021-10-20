@@ -25,7 +25,7 @@ public class MenuController {
 	}
 
 	@ApiOperation("Return a menu by provided weekday.")
-	@GetMapping(value = "/menu{weekday}")
+	@GetMapping(value = "/menu")
 	public List<Optional<Menu>> listMenuByWeekday (@RequestParam(value = "weekday") Weekday weekday) {return menuService.getMenuByWeekday(weekday);}
 
 	@ApiOperation("Return a menu by provided id.")
