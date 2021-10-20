@@ -4,6 +4,8 @@ import com.jgcolab.mymenu.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+
 import java.util.*;
 
 @Service
@@ -11,7 +13,7 @@ public class MenuService {
 
     private MenuRepository menuRepository;
 
-    @Autowired MenuService(MenuRepository menuRepository) {this.menuRepository = menuRepository;}
+    MenuService(MenuRepository menuRepository) {this.menuRepository = menuRepository;}
 
     public List<Menu> getAllMenus() {
         return (menuRepository.findAll());
@@ -21,9 +23,9 @@ public class MenuService {
         return menuRepository.findByWeekday(weekday);
     }
 
-    public Menu registerMenu(Menu menu) {
-        return menuRepository.save(menu);
-    }
+    public Optional<Menu> getMenuById(Long id) {return menuRepository.findById(id);}
+
+    public Menu registerMenu(Menu menu) {return menuRepository.save(menu);}
 
     public ResponseEntity<Menu> updateMenu(Long id, Menu newMenu) {
         Optional<Menu> oldMenu = menuRepository.findById(id);
