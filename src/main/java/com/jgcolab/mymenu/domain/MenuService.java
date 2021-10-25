@@ -1,12 +1,11 @@
 package com.jgcolab.mymenu.domain;
 
 import com.jgcolab.mymenu.repository.MenuRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -19,9 +18,7 @@ public class MenuService {
         return (menuRepository.findAll());
     }
 
-    public List<Optional<Menu>> getMenuByWeekday(Weekday weekday) {
-        return menuRepository.findByWeekday(weekday);
-    }
+    public List<Optional<Menu>> getMenuByWeekday(String weekday) {return menuRepository.findByWeekday(weekday);}
 
     public Optional<Menu> getMenuById(Long id) {return menuRepository.findById(id);}
 

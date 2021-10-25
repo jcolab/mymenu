@@ -12,8 +12,10 @@ public class Menu {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String description;
-    @Enumerated (EnumType.STRING) private MealType mealType;
-    @Enumerated (EnumType.STRING) private Weekday weekday;
+	@OneToOne
+    private MealType mealType;
+	@OneToOne
+    private Weekday weekday;
 	@OneToMany(targetEntity= Ingredients.class, cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<Ingredients> ingredients;
 

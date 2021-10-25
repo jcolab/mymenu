@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
-	List<Optional<Menu>> findByWeekday(Weekday weekday);
+	List<Optional<Menu>> findByWeekday(String weekday);
 }
