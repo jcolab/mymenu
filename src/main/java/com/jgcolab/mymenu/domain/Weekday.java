@@ -1,5 +1,14 @@
 package com.jgcolab.mymenu.domain;
 
-public enum Weekday {
-	MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
+import lombok.*;
+
+import javax.persistence.*;
+
+@Entity @Getter @Setter @NoArgsConstructor
+public class Weekday {
+	@Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String weekday;
+
+	public Weekday(String weekday) {this.weekday = weekday;}
 }
