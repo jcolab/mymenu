@@ -24,9 +24,10 @@ public class MenuController {
 		return menuService.getAllMenus();
 	}
 
-	@ApiOperation("Return a menu by provided weekday.")
-	@GetMapping(value = "/menu")
-	public List<Optional<Menu>> listMenuByWeekday (@RequestParam(value = "weekday") String weekday) {return menuService.getMenuByWeekday(weekday);}
+	//TODO GET Menu by weekday
+//	@ApiOperation("Return a menu by provided weekday.")
+//	@GetMapping(value = "/menu")
+//	public List<Optional<Menu>> listMenuByWeekday (@RequestParam(value = "weekday") String weekday) {return menuService.getMenuByWeekday(weekday);}
 
 	@ApiOperation("Return a menu by provided id.")
 	@GetMapping (value = "/menu/{id}")

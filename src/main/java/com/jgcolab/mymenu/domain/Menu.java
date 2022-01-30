@@ -13,10 +13,10 @@ public class Menu {
 	private Long id;
 	private String description;
 	@OneToOne
-    private MealType mealType;
+	MealType mealType;
 	@OneToOne
-    private Weekday weekday;
-	@OneToMany(targetEntity= Ingredients.class, cascade=CascadeType.ALL, orphanRemoval = true)
+	Weekday weekday;
+	@OneToMany(targetEntity= Ingredients.class, cascade=CascadeType.PERSIST, orphanRemoval = true)
 	private List<Ingredients> ingredients;
 
 	public Menu(String description, MealType mealType, Weekday weekday, List<Ingredients> ingredients) {

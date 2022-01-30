@@ -2,6 +2,7 @@ package com.jgcolab.mymenu.menu;
 
 import com.jgcolab.mymenu.domain.*;
 import com.jgcolab.mymenu.repository.MenuRepository;
+import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,6 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @DataJpaTest
@@ -23,10 +25,12 @@ public class MenuRepositoryTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    //TODO Unit tests
     @Test
-    @DisplayName("Should Get Menu by Weekday")
-    void itShouldGetMenuByWeekday() {
-        menuRepository.save(new Menu ("Breakfast", new MealType("Dinner"), new Weekday("Sunday")));
-        assertEquals("SUNDAY", menuRepository.findByWeekday("Sunday"));
+    @DisplayName("Create a menu")
+    void itShouldCreateAnMenu(){
+        Menu menu = new Menu("Test", new MealType("Dinner"), new Weekday("Monday"));
+        System.out.println(menu.getId());
+        assertEquals(1, menu.getId());
     }
 }

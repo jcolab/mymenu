@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class MealType {
 	@Id @GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String mealType;
+	private String type;
 
-	public MealType(String mealType) {this.mealType = mealType;}
+	public MealType(String type) {this.type = type;}
 }

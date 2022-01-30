@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Weekday {
 	@Id @GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String weekday;
+	private String day;
 
-	public Weekday(String weekday) {this.weekday = weekday;}
+	public Weekday(String day) {this.day = day;}
 }

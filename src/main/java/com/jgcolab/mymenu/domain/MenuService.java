@@ -3,9 +3,7 @@ package com.jgcolab.mymenu.domain;
 import com.jgcolab.mymenu.repository.MenuRepository;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -18,7 +16,8 @@ public class MenuService {
         return (menuRepository.findAll());
     }
 
-    public List<Optional<Menu>> getMenuByWeekday(String weekday) {return menuRepository.findByWeekday(weekday);}
+    //TODO
+//    public List<Optional<Menu>> getMenuByWeekday(String weekday) {return menuRepository.findByWeekday(weekday);}
 
     public Optional<Menu> getMenuById(Long id) {return menuRepository.findById(id);}
 
