@@ -1,5 +1,14 @@
 package com.jgcolab.mymenu.domain;
 
-public enum MealType {
-	LUNCH, DINNER, BREAKFAST, SNACK, DESSERT;
+import lombok.*;
+
+import javax.persistence.*;
+
+@Entity @Getter @Setter @NoArgsConstructor
+public class MealType {
+	@Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String type;
+
+	public MealType(String type) {this.type = type;}
 }

@@ -1,18 +1,14 @@
 package com.jgcolab.mymenu.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
 import javax.persistence.*;
 
-@Getter @Setter
+@Getter @Setter @NoArgsConstructor
 @Entity
 public class Ingredients {
-	@Id @Column (name = "ingredients_id")
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column (name = "ingredients_name")
-	private String name;
-	@Column (name = "ingredients_description")
 	private String description;
+
+	public Ingredients(String description) {this.description = description;}
 }

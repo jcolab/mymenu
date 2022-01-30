@@ -1,76 +1,54 @@
 package com.jgcolab.mymenu.api;
 
-import com.jgcolab.mymenu.domain.Ingredients;
-import com.jgcolab.mymenu.domain.Menu;
-import com.jgcolab.mymenu.domain.Weekday;
-import com.jgcolab.mymenu.repository.MenuRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.jgcolab.mymenu.domain.*;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.http.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping
+@RequestMapping (produces = "application/json")
 public class MenuController {
+	private final MenuService menuService;
 
-	@Autowired private MenuRepository menuRepository;
+	public MenuController (MenuService menuService) {this.menuService = menuService;}
 
-	@GetMapping ("/menus")
+	@ApiOperation("Return all menus.")
+	@GetMapping (value = "/menus")
 	public List<Menu> listMenus () {
-		return menuRepository.findAll();
+		return menuService.getAllMenus();
 	}
 
-	@GetMapping("/menu/{weekday}")
-	public List<Optional<Menu>> listMenuByWeekday (@PathVariable("weekday") Weekday weekday) {return menuRepository.findByWeekday(weekday);}
+	//TODO GET Menu by weekday
+//	@ApiOperation("Return a menu by provided weekday.")
+//	@GetMapping(value = "/menu")
+//	public List<Optional<Menu>> listMenuByWeekday (@RequestParam(value = "weekday") String weekday) {return menuService.getMenuByWeekday(weekday);}
 
-	@PostMapping ("/menu")
+	@ApiOperation("Return a menu by provided id.")
+	@GetMapping (value = "/menu/{id}")
+	public Optional<Menu> listMenuById (@PathVariable ("id") Long id) {return menuService.getMenuById(id);}
+
+	@ApiOperation("Create a new menu.")
+	@PostMapping (value = "/menu")
 	@ResponseStatus (HttpStatus.CREATED)
-	@Transactional
 	public Menu registerMenu(@RequestBody Menu menu) {
-		return menuRepository.save(menu);
+		return menuService.registerMenu(menu);
 	}
 
-	@PutMapping ("/menu/{id}")
-	@Transactional
+	@ApiOperation("Update a menu by ID.")
+	@PutMapping (value = "/menu/{id}")
 	public ResponseEntity<Menu> updateMenu(@PathVariable Long id, @Validated @RequestBody Menu newMenu) {
-		Optional<Menu> oldMenu = menuRepository.findById(id);
-		if (oldMenu.isPresent()) {
-			oldMenu.get().setDescription(newMenu.getDescription());
-			oldMenu.get().setMealType(newMenu.getMealType());
-			oldMenu.get().setWeekday(newMenu.getWeekday());
-			for (Ingredients newIngredients : newMenu.getIngredients()) {
-				for (Ingredients oldIngredients: oldMenu.get().getIngredients()) {
-					if (!newIngredients.getName().equals(oldIngredients.getName()) && !newIngredients.getDescription().equals(oldIngredients.getDescription())
-					|| !newIngredients.getName().equals(oldIngredients.getName()) && newIngredients.getDescription().equals(oldIngredients.getDescription())
-					|| newIngredients.getName().equals(oldIngredients.getName()) && !newIngredients.getDescription().equals(oldIngredients.getDescription())) {
-						oldIngredients.setName(newIngredients.getName());
-						oldIngredients.setDescription(newIngredients.getDescription());
-					}
-				}
-
-			}
-			menuRepository.save(oldMenu.get());
-			return new ResponseEntity<>(oldMenu.get(), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		return menuService.updateMenu(id, newMenu);
 	}
 
-	@DeleteMapping ("/menu/{id}")
-	@Transactional
-	public ResponseEntity<Menu> removeById(@PathVariable Long id) {
-		Optional<Menu> menu = menuRepository.findById(id);
-		if (menu.isPresent()) {
-			menuRepository.deleteById(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	@ApiOperation("Delete a menu by ID.")
+	@DeleteMapping (value = "/menu/{id}")
+	public ResponseEntity removeById(@PathVariable Long id) {
+		return menuService.removeMenu(id);
 	}
 }
